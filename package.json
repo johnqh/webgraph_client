@@ -1,0 +1,21 @@
+{
+  "name": "@sudobility/webgraph_client",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Client SDK for webgraph_api",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" } },
+  "files": ["dist"],
+  "scripts": {
+    "build": "bunx tsc -p tsconfig.build.json",
+    "build:watch": "bunx tsc -p tsconfig.build.json --watch",
+    "clean": "rm -rf dist",
+    "test": "bunx vitest run",
+    "typecheck": "bunx tsc --noEmit",
+    "lint": "bunx eslint src/",
+    "verify": "bun run typecheck && bun run lint && bun run test && bun run build",
+    "prepublishOnly": "bun run clean && bun run build"
+  },
+  "license": "BUSL-1.1"
+}
