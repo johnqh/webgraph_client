@@ -5,17 +5,37 @@
   "description": "Client SDK for webgraph_api",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" } },
-  "files": ["dist"],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "bunx tsc -p tsconfig.build.json",
     "build:watch": "bunx tsc -p tsconfig.build.json --watch",
     "clean": "rm -rf dist",
-    "test": "bunx vitest run",
+    "test": "bunx vitest run --passWithNoTests",
     "typecheck": "bunx tsc --noEmit",
     "lint": "bunx eslint src/",
     "verify": "bun run typecheck && bun run lint && bun run test && bun run build",
     "prepublishOnly": "bun run clean && bun run build"
   },
-  "license": "BUSL-1.1"
+  "license": "BUSL-1.1",
+  "devDependencies": {
+    "@eslint/js": "^9.38.0",
+    "@types/node": "^24.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^16.4.0",
+    "prettier": "^3.7.4",
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.15"
+  }
 }
