@@ -75,6 +75,23 @@ export class WebgraphClient {
       `/apps/${appKey}/graph`
     );
   }
+
+  /**
+   * Forward a caller's query string to a read endpoint unchanged.
+   *
+   * Exists for API gateways that proxy these endpoints without re-typing them:
+   * the typed helpers above build a query from refs, which is reshaping the
+   * caller's request. `endpoint` is a closed set rather than a free string so a
+   * caller cannot steer the path.
+   */
+  proxyGet(
+    appKey: string,
+    endpoint: 'graph' | 'route' | 'next-step',
+    search: string
+  ) {
+    const qs = search ? `?${search}` : '';
+    return this.request<unknown>(`/apps/${appKey}/${endpoint}${qs}`);
+  }
 }
 
 function query(refs: {

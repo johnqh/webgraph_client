@@ -67,6 +67,32 @@ describe("WebgraphClient", () => {
     expect(url).not.toContain("toSignature");
   });
 
+  it("forwards a raw query string verbatim", async () => {
+    const f = mockFetch({ route: null });
+    const client = new WebgraphClient({
+      baseUrl: BASE,
+      apiKey: "k",
+      fetchImpl: f,
+    });
+    await client.proxyGet("myapp", "route", "toUrlPath=%2Fcheckout&maxDepth=3");
+    expect((f as unknown as ReturnType<typeof vi.fn>).mock.calls[0][0]).toBe(
+      `${BASE}/apps/myapp/route?toUrlPath=%2Fcheckout&maxDepth=3`
+    );
+  });
+
+  it("omits the question mark when there is no query string", async () => {
+    const f = mockFetch({ views: [], transitions: [] });
+    const client = new WebgraphClient({
+      baseUrl: BASE,
+      apiKey: "k",
+      fetchImpl: f,
+    });
+    await client.proxyGet("myapp", "graph", "");
+    expect((f as unknown as ReturnType<typeof vi.fn>).mock.calls[0][0]).toBe(
+      `${BASE}/apps/myapp/graph`
+    );
+  });
+
   it("strips a trailing slash from the base url", async () => {
     const f = mockFetch({ apps: [] });
     const client = new WebgraphClient({

@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/webgraph_client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "description": "Client SDK for webgraph_api",
   "main": "./dist/index.js",
@@ -22,7 +22,7 @@
     "typecheck": "bunx tsc --noEmit",
     "lint": "bunx eslint src/",
     "verify": "bun run typecheck && bun run lint && bun run test && bun run build",
-    "prepublishOnly": "bun run clean && bun run build"
+    "prepublishOnly": "rm -rf dist && bun run build"
   },
   "license": "BUSL-1.1",
   "devDependencies": {
