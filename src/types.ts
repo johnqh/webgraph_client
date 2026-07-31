@@ -23,6 +23,12 @@ export interface ObserveRequest {
   links?: { toUrlPath: string; label?: string }[];
   from?: { urlPath: string; signature: string } | null;
   trigger?: { kind: string; label?: string } | null;
+  /** Title of the view, when the observer has one. */
+  title?: string;
+  /** Ordered heading text, for outline-first goal matching. */
+  headings?: string[];
+  /** Markdown projection of the view's content. Never HTML. */
+  contentMd?: string;
 }
 
 export interface Transition {
