@@ -2,6 +2,7 @@ import type {
   NextStepResponse,
   ObserveRequest,
   ObserveResponse,
+  PlanResponse,
   RouteResponse,
   ViewRef,
 } from './types';
@@ -91,6 +92,48 @@ export class WebgraphClient {
   ) {
     const qs = search ? `?${search}` : '';
     return this.request<unknown>(`/apps/${appKey}/${endpoint}${qs}`);
+  }
+
+  /**
+   * Plan a route to a goal.
+   *
+   * The response may be `source: 'graph-fallback'` — the service returns a
+   * plain graph route whenever the planner is absent, failed, or proposed an
+   * action the graph could not verify. Callers should treat that as a weaker
+   * plan, not an error.
+   */
+  plan(
+    appKey: string,
+    body: {
+      goal: string;
+      from?: ViewRef;
+      maxDepth?: number;
+      maxCandidates?: number;
+    }
+  ) {
+    return this.request<PlanResponse>(`/apps/${appKey}/plan`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+  }
+
+  /**
+   * Re-plan after hitting a problem, reporting what failed so the graph can
+   * route around it for everyone.
+   */
+  replan(
+    appKey: string,
+    body: {
+      goal: string;
+      from: ViewRef;
+      failed?: { transitionId?: number; controlName?: string; reason: string };
+      maxDepth?: number;
+    }
+  ) {
+    return this.request<PlanResponse>(`/apps/${appKey}/replan`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
   }
 }
 

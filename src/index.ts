@@ -8,4 +8,6 @@ export type {
   Transition,
   RouteResponse,
   NextStepResponse,
+  PlanAction,
+  PlanResponse,
 } from './types';

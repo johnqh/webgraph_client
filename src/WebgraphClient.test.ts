@@ -105,4 +105,33 @@ describe("WebgraphClient", () => {
       (f as unknown as ReturnType<typeof vi.fn>).mock.calls[0][0]
     ).toBe(`${BASE}/apps/myapp/graph`);
   });
+  it("posts a goal to the plan endpoint", async () => {
+    const f = mockFetch({ actions: [] });
+    const client = new WebgraphClient({
+      baseUrl: BASE,
+      apiKey: "k",
+      fetchImpl: f,
+    });
+    await client.plan("myapp", { goal: "add to cart" });
+    expect(f).toHaveBeenCalledWith(
+      `${BASE}/apps/myapp/plan`,
+      expect.objectContaining({ method: "POST" })
+    );
+  });
+
+  it("posts a failure report to the replan endpoint", async () => {
+    const f = mockFetch({ actions: [] });
+    const client = new WebgraphClient({
+      baseUrl: BASE,
+      apiKey: "k",
+      fetchImpl: f,
+    });
+    await client.replan("myapp", {
+      goal: "add to cart",
+      from: { urlPath: "/shop" },
+      failed: { transitionId: 3, reason: "not found" },
+    });
+    const init = (f as unknown as ReturnType<typeof vi.fn>).mock.calls[0][1];
+    expect(JSON.parse(init.body as string).failed.transitionId).toBe(3);
+  });
 });

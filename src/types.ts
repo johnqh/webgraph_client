@@ -56,3 +56,26 @@ export interface NextStepResponse {
   transition: Transition | null;
   reason: string | null;
 }
+
+export type PlanAction =
+  | {
+      kind: 'goto';
+      toUrlPath: string;
+      toViewId: number | null;
+      label: string | null;
+    }
+  | {
+      kind: 'click';
+      controlName: string;
+      onViewId: number;
+      toViewId: number | null;
+      label: string | null;
+    };
+
+export interface PlanResponse {
+  startView: { id: number; urlPath: string; signature: string } | null;
+  actions: PlanAction[];
+  confidence: 'high' | 'medium' | 'low';
+  reason: string;
+  source: 'llm' | 'graph-fallback';
+}
