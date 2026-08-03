@@ -8,6 +8,8 @@ export interface ControlInput {
   tag: string;
   role?: string;
   name?: string;
+  /** click | fill | select | navigate | radio_select. Part of view identity. */
+  actionKind?: string;
 }
 
 export interface RegionInput {
@@ -76,7 +78,9 @@ export type PlanAction =
       onViewId: number;
       toViewId: number | null;
       label: string | null;
-    };
+    }
+  /** Typing never navigates, so there is no resulting view. */
+  | { kind: 'fill'; controlName: string; value: string; onViewId: number };
 
 export interface PlanResponse {
   startView: { id: number; urlPath: string; signature: string } | null;

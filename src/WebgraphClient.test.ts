@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { WebgraphClient } from "./WebgraphClient";
+import type { PlanAction } from "./types";
 
 function mockFetch(payload: unknown) {
   return vi.fn(async () => ({
@@ -133,5 +134,14 @@ describe("WebgraphClient", () => {
     });
     const init = (f as unknown as ReturnType<typeof vi.fn>).mock.calls[0][1];
     expect(JSON.parse(init.body as string).failed.transitionId).toBe(3);
+  });
+  it("types a fill action as carrying a value", () => {
+    const action: PlanAction = {
+      kind: "fill",
+      controlName: "Search",
+      value: "mac mini",
+      onViewId: 1,
+    };
+    expect(action.value).toBe("mac mini");
   });
 });

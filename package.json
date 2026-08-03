@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/webgraph_client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "description": "Client SDK for webgraph_api",
   "main": "./dist/index.js",
