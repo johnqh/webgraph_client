@@ -6,6 +6,7 @@ export type {
   ViewRef,
   ControlInput,
   RegionInput,
+  NetworkRequestInput,
   ObserveRequest,
   ObserveResponse,
   Transition,

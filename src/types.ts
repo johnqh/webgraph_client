@@ -19,6 +19,23 @@ export interface RegionInput {
   children?: RegionInput[];
 }
 
+/**
+ * One request a page made.
+ *
+ * Send the COMPLETE request. The service redacts at ingest and never stores a
+ * header value, a body value, or a credential — only names, types and the
+ * shape of the endpoint.
+ */
+export interface NetworkRequestInput {
+  method: string;
+  url: string;
+  requestHeaders?: Record<string, string>;
+  requestBody?: unknown;
+  responseStatus?: number;
+  responseHeaders?: Record<string, string>;
+  responseBody?: unknown;
+}
+
 export interface ObserveRequest {
   urlPath: string;
   regions: RegionInput[];
@@ -31,6 +48,8 @@ export interface ObserveRequest {
   headings?: string[];
   /** Markdown projection of the view's content. Never HTML. */
   contentMd?: string;
+  /** Traffic the page produced, for learning the app's API surface. */
+  networkRequests?: NetworkRequestInput[];
 }
 
 export interface Transition {
@@ -52,6 +71,8 @@ export interface ObserveResponse {
   suspectEmptyRender?: boolean;
   fromViewUnresolved?: boolean;
   truncated?: { regions: number };
+  /** Endpoints learned from `networkRequests`, and entries skipped. */
+  api?: { learned: number; skipped: number };
 }
 
 export interface RouteResponse {

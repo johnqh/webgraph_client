@@ -170,4 +170,31 @@ describe("WebgraphClient", () => {
     };
     expect(action.within).toBe("Mac mini M2");
   });
+  it("sends network requests on an observation", async () => {
+    const f = mockFetch({ view: { signature: "a".repeat(64) } });
+    const client = new WebgraphClient({
+      baseUrl: BASE,
+      apiKey: "k",
+      fetchImpl: f,
+    });
+    await client.observe("myapp", {
+      urlPath: "/",
+      regions: [],
+      networkRequests: [{ method: "GET", url: "https://shop.com/api/x" }],
+    });
+    const init = (f as unknown as ReturnType<typeof vi.fn>).mock.calls[0][1];
+    expect(JSON.parse(init.body as string).networkRequests).toHaveLength(1);
+  });
+
+  it("sends a host when registering an app", async () => {
+    const f = mockFetch({ app: {} });
+    const client = new WebgraphClient({
+      baseUrl: BASE,
+      apiKey: "k",
+      fetchImpl: f,
+    });
+    await client.createApp({ key: "myapp", host: "shop.com" });
+    const init = (f as unknown as ReturnType<typeof vi.fn>).mock.calls[0][1];
+    expect(JSON.parse(init.body as string).host).toBe("shop.com");
+  });
 });

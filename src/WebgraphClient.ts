@@ -37,7 +37,13 @@ export class WebgraphClient {
     return (await res.json()) as T;
   }
 
-  createApp(body: { key: string; title?: string; entryUrlPath?: string }) {
+  createApp(body: {
+    key: string;
+    title?: string;
+    entryUrlPath?: string;
+    /** Origin host. Without it NO API traffic is captured for this app. */
+    host?: string;
+  }) {
     return this.request<{ app: unknown }>('/apps', {
       method: 'POST',
       body: JSON.stringify(body),
