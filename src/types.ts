@@ -78,9 +78,21 @@ export type PlanAction =
       onViewId: number;
       toViewId: number | null;
       label: string | null;
+      /**
+       * Text identifying WHICH row, when the control repeats in a list. A list
+       * has one control name however many rows it holds, so this is how a plan
+       * says which one.
+       */
+      within?: string;
     }
   /** Typing never navigates, so there is no resulting view. */
-  | { kind: 'fill'; controlName: string; value: string; onViewId: number };
+  | {
+      kind: 'fill';
+      controlName: string;
+      value: string;
+      onViewId: number;
+      within?: string;
+    };
 
 export interface PlanResponse {
   startView: { id: number; urlPath: string; signature: string } | null;

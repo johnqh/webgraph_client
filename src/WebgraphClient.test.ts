@@ -144,4 +144,30 @@ describe("WebgraphClient", () => {
     };
     expect(action.value).toBe("mac mini");
   });
+  it("sends observed content with a plan request", async () => {
+    const f = mockFetch({ actions: [] });
+    const client = new WebgraphClient({
+      baseUrl: BASE,
+      apiKey: "k",
+      fetchImpl: f,
+    });
+    await client.plan("myapp", {
+      goal: "cheapest mac mini",
+      observed: { contentMd: "# Results\n\nMac mini $599" },
+    });
+    const init = (f as unknown as ReturnType<typeof vi.fn>).mock.calls[0][1];
+    expect(JSON.parse(init.body as string).observed.contentMd).toContain("599");
+  });
+
+  it("types within on a click action", () => {
+    const action: PlanAction = {
+      kind: "click",
+      controlName: "Add to cart",
+      within: "Mac mini M2",
+      onViewId: 1,
+      toViewId: null,
+      label: null,
+    };
+    expect(action.within).toBe("Mac mini M2");
+  });
 });

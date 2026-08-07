@@ -109,6 +109,12 @@ export class WebgraphClient {
       from?: ViewRef;
       maxDepth?: number;
       maxCandidates?: number;
+      /**
+       * Markdown the caller is looking at right now. Needed for goals that
+       * depend on live data — "the cheapest one" cannot be answered from what
+       * was stored at some past observation.
+       */
+      observed?: { contentMd?: string };
     }
   ) {
     return this.request<PlanResponse>(`/apps/${appKey}/plan`, {
@@ -128,6 +134,7 @@ export class WebgraphClient {
       from: ViewRef;
       failed?: { transitionId?: number; controlName?: string; reason: string };
       maxDepth?: number;
+      observed?: { contentMd?: string };
     }
   ) {
     return this.request<PlanResponse>(`/apps/${appKey}/replan`, {
