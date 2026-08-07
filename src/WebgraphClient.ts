@@ -41,10 +41,20 @@ export class WebgraphClient {
     key: string;
     title?: string;
     entryUrlPath?: string;
-    /** Origin host. Without it NO API traffic is captured for this app. */
+    /**
+     * The site this app is. Identity, not decoration: two consumers that send
+     * the same host share one graph, which is the whole point of storing one.
+     * Without it NO API traffic is captured either.
+     *
+     * Send it on EVERY registration — omitting it on a later call addresses a
+     * different app.
+     */
     host?: string;
   }) {
-    return this.request<{ app: unknown }>('/apps', {
+    // The returned key is canonical and may differ from the one sent. Use
+    // `app.key` for every later call; a locally-invented key addresses a
+    // private graph nobody else can contribute to.
+    return this.request<{ app: { key: string } }>('/apps', {
       method: 'POST',
       body: JSON.stringify(body),
     });
