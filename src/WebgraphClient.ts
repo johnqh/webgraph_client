@@ -5,7 +5,7 @@ import type {
   PlanResponse,
   RouteResponse,
   ViewRef,
-} from './types';
+} from './types.js';
 
 export interface WebgraphClientOptions {
   baseUrl: string;

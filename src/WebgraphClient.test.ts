@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { WebgraphClient } from "./WebgraphClient";
-import type { PlanAction } from "./types";
+import { WebgraphClient } from "./WebgraphClient.js";
+import type { PlanAction } from "./types.js";
 
 function mockFetch(payload: unknown) {
   return vi.fn(async () => ({

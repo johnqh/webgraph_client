@@ -1,4 +1,7 @@
-export { WebgraphClient, type WebgraphClientOptions } from './WebgraphClient';
+export {
+  WebgraphClient,
+  type WebgraphClientOptions,
+} from './WebgraphClient.js';
 export type {
   ViewRef,
   ControlInput,
@@ -10,4 +13,4 @@ export type {
   NextStepResponse,
   PlanAction,
   PlanResponse,
-} from './types';
+} from './types.js';
