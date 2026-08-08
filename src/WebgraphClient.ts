@@ -126,11 +126,28 @@ export class WebgraphClient {
       maxDepth?: number;
       maxCandidates?: number;
       /**
-       * Markdown the caller is looking at right now. Needed for goals that
-       * depend on live data — "the cheapest one" cannot be answered from what
-       * was stored at some past observation.
+       * Whether the caller already holds a session.
+       *
+       * Defaults to false server-side, which routes AROUND login walls. Set it
+       * true only when a session really is held: a route planned through a
+       * wall works for nobody else.
        */
-      observed?: { contentMd?: string };
+      authenticated?: boolean;
+      /**
+       * What the caller is looking at right now.
+       *
+       * `contentMd` answers goals that depend on live data — "the cheapest
+       * one" cannot come from what was stored at some past observation.
+       *
+       * `controls` additionally lets the plan ACT on this page even when the
+       * graph has never recorded it. Supplying them is what makes a next step
+       * possible on an unknown screen; the reply then has `source: "explore"`.
+       */
+      observed?: {
+        contentMd?: string;
+        urlPath?: string;
+        controls?: Array<{ name: string; actionKind?: string }>;
+      };
     }
   ) {
     return this.request<PlanResponse>(`/apps/${appKey}/plan`, {

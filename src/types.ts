@@ -113,6 +113,26 @@ export type PlanAction =
       value: string;
       onViewId: number;
       within?: string;
+    }
+  /**
+   * Call the app's own API instead of driving its interface.
+   *
+   * Ends a plan: nothing is known about what the interface shows afterwards.
+   * `authHeaderNames` are the headers whose values were withheld — the caller
+   * must supply a live one for each, which is what makes an authenticated
+   * replay possible. `bodyJson` is the planner's draft and is NOT verified
+   * against the graph, exactly as a fill's value is not.
+   *
+   * A consumer that cannot issue HTTP requests must SKIP these rather than
+   * treat them as a control: they carry no controlName and no target path.
+   */
+  | {
+      kind: 'call';
+      endpointId: number;
+      method: string;
+      url: string;
+      bodyJson?: string;
+      authHeaderNames: string[];
     };
 
 export interface PlanResponse {
@@ -120,5 +140,11 @@ export interface PlanResponse {
   actions: PlanAction[];
   confidence: 'high' | 'medium' | 'low';
   reason: string;
-  source: 'llm' | 'graph-fallback';
+  /**
+   * `explore` means the plan acts on the page the caller reported seeing
+   * rather than on a recorded route — verified against the controls they
+   * supplied, not against the graph. `startView` then describes where they
+   * already are, and there is no approach to walk.
+   */
+  source: 'llm' | 'graph-fallback' | 'explore';
 }
