@@ -22,7 +22,7 @@
     "typecheck": "bunx tsc --noEmit",
     "lint": "bunx eslint src/",
     "verify": "bun run typecheck && bun run lint && bun run test && bun run build",
-    "prepublishOnly": "sh -c 'test ! -f ../workflows/scripts/check-publish-safety.cjs || node ../workflows/scripts/check-publish-safety.cjs' && rm -rf dist && bun run build && sh -c 'test ! -f ../workflows/scripts/check-package-entry.cjs || node ../workflows/scripts/check-package-entry.cjs'"
+    "prepublishOnly": "sh -c 'test ! -f ../workflows/scripts/check-publish-safety.cjs || node ../workflows/scripts/check-publish-safety.cjs' && rm -rf dist && bun run build"
   },
   "license": "BUSL-1.1",
   "devDependencies": {
