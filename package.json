@@ -18,10 +18,10 @@
     "build": "bunx tsc -p tsconfig.build.json",
     "build:watch": "bunx tsc -p tsconfig.build.json --watch",
     "clean": "rm -rf dist",
-    "test": "bunx vitest run --passWithNoTests",
+    "test:unit": "bunx vitest run --passWithNoTests",
     "typecheck": "bunx tsc --noEmit",
     "lint": "bunx eslint src/",
-    "verify": "bun run typecheck && bun run lint && bun run test && bun run build",
+    "verify": "bun run typecheck && bun run lint && bun run test:unit && bun run build",
     "prepublishOnly": "sh -c 'test ! -f ../workflows/scripts/check-publish-safety.cjs || node ../workflows/scripts/check-publish-safety.cjs' && rm -rf dist && bun run build"
   },
   "license": "BUSL-1.1",
@@ -37,5 +37,8 @@
     "prettier": "^3.7.4",
     "typescript": "~5.9.3",
     "vitest": "^4.0.15"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
